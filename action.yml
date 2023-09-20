@@ -39,7 +39,7 @@ runs:
         {
           echo "IncQuery AUTOSAR-UML Bridge will be installed."
           echo "need_to_install=true" >> $env:GITHUB_OUTPUT
-          echo "download_url=https://build.incquerylabs.com/nexus/repository/lieberlieber-collaboration-raw/aruml-releases/release-v2023.1.0/IncQuery%20AUTOSAR-UML%20Bridge%202023.1.0%20Setup.exe" >> $env:GITHUB_OUTPUT
+          echo "download_url=https://build.incquerylabs.com/nexus/repository/incquery-suite-internal-raw/lieberlieber-collaboration/aruml-internal/release-v2023.2.0-build/IncQuery%20AUTOSAR-UML%20Bridge%202023.2.0-build%20Setup.exe" >> $env:GITHUB_OUTPUT
           echo "installer_path=${{ runner.temp }}\IncQuery AUTOSAR-UML Bridge Setup.exe" >> $env:GITHUB_OUTPUT
         }
     
@@ -96,5 +96,4 @@ runs:
     - name: Run the IncQuery AUTOSAR-UML Bridge
       shell: pwsh
       run: |
-        $env:ARUML_HOME = 'C:\Program Files\IncQuery Labs\IncQuery AUTOSAR-UML Bridge\Transformation\'
         & 'C:\Program Files\IncQuery Labs\IncQuery AUTOSAR-UML Bridge\CLI\iql-aub-cli.exe' -i='${{ inputs.arxml_file_path }}' -e='${{ inputs.ea_model_file_path }}' -l='${{ runner.temp }}/IncQueryAUBLic.yaml' 
