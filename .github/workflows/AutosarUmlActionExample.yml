@@ -1,0 +1,19 @@
+# Copyright (c) IncQuery Labs cPlc.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The following secrets need to be defined: INCQUERY_USERNAME, INCQUERY_PASSWORD, INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE
+
+on:
+  push
+jobs:
+  AutosarUml:
+    defaults:
+      run:
+        shell: pwsh
+    runs-on: windows-latest
+    timeout-minutes: 15
+        steps:
+      - name: Checkout Git repository
+        uses: actions/checkout@v3
