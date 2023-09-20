@@ -40,7 +40,7 @@ runs:
           echo "IncQuery AUTOSAR-UML Bridge will be installed."
           echo "need_to_install=true" >> $env:GITHUB_OUTPUT
           echo "download_url=https://build.incquerylabs.com/nexus/repository/lieberlieber-collaboration-raw/aruml-releases/release-v2023.1.0/IncQuery%20AUTOSAR-UML%20Bridge%202023.1.0%20Setup.exe" >> $env:GITHUB_OUTPUT
-          echo "installer_path=${{ runner.temp }}/IncQuery AUTOSAR-UML Bridge 2023.1.0 Setup" >> $env:GITHUB_OUTPUT
+          echo "installer_path=${{ runner.temp }}/IncQuery AUTOSAR-UML Bridge Setup" >> $env:GITHUB_OUTPUT
         }
     
     - name: Restore the IncQuery AUTOSAR-UML Bridge installer from cache
@@ -83,7 +83,7 @@ runs:
             echo $msg
             echo $msg | Out-File -FilePath $env:GITHUB_STEP_SUMMARY
             exit 1
-        }        
+        }
         $installResult = Start-Process -FilePath '${{ steps.is-iqs-aub-installed.outputs.installer_path }}' -ArgumentList @("/install", "/quiet") -Wait -PassThru
         exit $installResult.ExitCode
     
