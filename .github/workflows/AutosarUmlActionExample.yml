@@ -23,7 +23,7 @@ jobs:
           Copy-Item -Path ./counting-logic.qeax -Destination '${{ runner.temp }}/counting-logic-old.qeax'
       
       - name: Run IncQuery AUTOSAR-UML Bridge
-        uses: IncQueryLabs/incquery-suite-bridge-autosar-uml-action@v1
+        uses: ./
         with:
           arxml_file_path: counting-logic.arxml
           ea_model_file_path: counting-logic.qeax
