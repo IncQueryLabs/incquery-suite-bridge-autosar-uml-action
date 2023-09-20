@@ -87,14 +87,10 @@ runs:
         $installResult = Start-Process -FilePath '${{ steps.is-iqs-aub-installed.outputs.installer_path }}' -ArgumentList @("/install", "/quiet") -Wait -PassThru
         exit $installResult.ExitCode
     
-    - name: Create the license file
+    - name: Run the IncQuery AUTOSAR-UML Bridge
       shell: pwsh
       run: |
         echo '${{ inputs.license }}' | Out-File -FilePath '${{ runner.temp }}/IncQueryAUB.lic'
         echo 'licenseFilePath: IncQueryAUB.lic' | Out-File -FilePath '${{ runner.temp }}/IncQueryAUBLic.yaml'
-    
-    - name: Run the IncQuery AUTOSAR-UML Bridge
-      shell: pwsh
-      run: |
         $env:ARUML_HOME = 'C:\Program Files\IncQuery Labs\IncQuery AUTOSAR-UML Bridge\Transformation\'
         & 'C:\Program Files\IncQuery Labs\IncQuery AUTOSAR-UML Bridge\CLI\iql-aub-cli.exe' -i='${{ inputs.arxml_file_path }}' -e='${{ inputs.ea_model_file_path }}' -l='${{ runner.temp }}/IncQueryAUBLic.yaml' 
