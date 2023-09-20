@@ -14,6 +14,19 @@ jobs:
         shell: pwsh
     runs-on: windows-latest
     timeout-minutes: 15
-        steps:
+    steps:
       - name: Checkout Git repository
         uses: actions/checkout@v3
+      
+      - name: Backup current model
+        run: |
+          Copy-Item -Path ./counting-logic.qeax -Destination '${{ runner.temp }}/counting-logic-old.qeax'
+      
+      - name: Run IncQuery AUTOSAR-UML Bridge
+        uses: IncQueryLabs/incquery-suite-bridge-autosar-uml-action@v1
+        with:
+          arxml_file_path: counting-logic.arxml
+          ea_model_file_path: counting-logic.qeax
+          incquery_username: "${{ secrets.INCQUERY_USERNAME }}"
+          incquery_password: "${{ secrets.INCQUERY_PASSWORD }}"
+          license: "${{ secrets.INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE }}"
