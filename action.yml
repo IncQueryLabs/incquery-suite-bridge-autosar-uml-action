@@ -73,7 +73,7 @@ runs:
     
     - name: Install the IncQuery AUTOSAR-UML Bridge
       shell: pwsh
-      if: ${{ steps.is-iqs-aub-installede.outputs.need_to_install == 'true' }}
+      if: ${{ steps.is-iqs-aub-installed.outputs.need_to_install == 'true' }}
       run: |
         $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
         $isAdmin = $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
