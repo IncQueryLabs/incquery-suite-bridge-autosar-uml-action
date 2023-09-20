@@ -96,4 +96,5 @@ runs:
     - name: Run the IncQuery AUTOSAR-UML Bridge
       shell: pwsh
       run: |
+        $env:ARUML_HOME = 'C:\Program Files\IncQuery Labs\IncQuery AUTOSAR-UML Bridge\Transformation\'
         & 'C:\Program Files\IncQuery Labs\IncQuery AUTOSAR-UML Bridge\CLI\iql-aub-cli.exe' -i='${{ inputs.arxml_file_path }}' -e='${{ inputs.ea_model_file_path }}' -l='${{ runner.temp }}/IncQueryAUBLic.yaml' 
