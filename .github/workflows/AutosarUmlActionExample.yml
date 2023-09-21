@@ -31,5 +31,8 @@ jobs:
       - name: DiffCheck   
         run: | 
           'C:\"Program Files"\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe' 
-          Diff --base Base.eapx --mine B.eapx --theirs A.eapx [--sfs]
+          Diff --base Base.eapx 
+          --mine B.eapx 
+          --theirs A.eapx 
+          [--sfs]
         
