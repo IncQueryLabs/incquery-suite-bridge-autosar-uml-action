@@ -30,9 +30,6 @@ jobs:
       #Diff Check between the modified files     
       - name: DiffCheck   
         run: | 
-          'C:\"Program Files"\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe' 
-          Diff --base Base.eapx 
-          --mine B.eapx 
-          --theirs A.eapx 
-          [--sfs]
+          $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --theirs A.eapx --mine B.eapx --sfs ${{ steps.session_file.outputs.result }}
+          echo $output
         
