@@ -29,7 +29,7 @@ jobs:
           License: ${{secrets.LTALICENSE}}
       #Diff Check between the modified files     
       - name: DiffCheck   
-        run: C:\"Program Files"\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe diff --base base.eapx --mine B.eapx --theirs A.eapx [--sfs]
+        run: LemonTree.Automation.exe diff --base base.eapx --mine B.eapx --theirs A.eapx [--sfs]
              echo Exitcode $LASTEXITCODE
              pause
         
