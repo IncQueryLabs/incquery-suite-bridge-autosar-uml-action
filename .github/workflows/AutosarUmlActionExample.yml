@@ -30,7 +30,7 @@ jobs:
       #Download    
       - name: Download base-commit file
         id: baseDownload
-        echo "result=downloaded" >> $env:GITHUB_OUTPUT
+        echo "result=downloaded" 
       #Archive Session Files
       - name: Archive Session Files
         if: steps.baseDownload.outputs.result == 'downloaded'
