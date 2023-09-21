@@ -30,6 +30,6 @@ jobs:
       #Diff Check between the modified files     
       - name: DiffCheck   
         run: | 
-          $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --theirs A.eapx --mine B.eapx --sfs ${{ steps.session_file.outputs.result }}
+          $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --theirs A.eapx --mine B.eapx --sfs log.txt
           echo $output
         
