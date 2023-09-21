@@ -14,6 +14,22 @@ jobs:
         shell: pwsh
     runs-on: windows-latest
     timeout-minutes: 15
-        steps:
+    steps:
       - name: Checkout Git repository
         uses: actions/checkout@v3
+        with:
+          lfs: true
+          fetch-depth: 0
+      #Install LieberLieber LemonTree.Automation on the Action-Runner and prepare the license
+      #the secrets.LTALICENSE contains the text from the License File provided
+      - name: GetLTA
+        uses: LieberLieber/setup-LemonTree.Automation@v1
+        id: GetLTA
+        with:
+          License: ${{secrets.LTALICENSE}}
+      #Diff Check between the modified files     
+      - name: DiffCheck   
+        run: C:\"Program Files"\LieberLieber\LemonTree.Automation\LemonTree.Automation.exe diff --base base.eapx --mine B.eapx --theirs A.eapx [--sfs]
+             echo Exitcode $LASTEXITCODE
+             pause
+        
