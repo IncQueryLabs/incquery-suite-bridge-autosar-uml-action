@@ -27,13 +27,8 @@ jobs:
         id: GetLTA
         with:
           License: ${{secrets.LTALICENSE}}
-      #Download    
-      - name: Download base-commit file
-        id: baseDownload
-        echo "result=downloaded" 
       #Archive Session Files
       - name: Archive Session Files
-        if: steps.baseDownload.outputs.result == 'downloaded'
         uses: actions/upload-artifact@v3
         with:
           name: Review Session File
