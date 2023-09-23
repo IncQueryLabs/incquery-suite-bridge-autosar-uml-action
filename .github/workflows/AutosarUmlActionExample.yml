@@ -17,26 +17,23 @@ jobs:
     steps:
       - name: Checkout Git repository
         uses: actions/checkout@v3
-        with:
-          lfs: true
-          fetch-depth: 0
       #Install LieberLieber LemonTree.Automation on the Action-Runner and prepare the license
       #the secrets.LTALICENSE contains the text from the License File provided
       - name: GetLTA
         uses: LieberLieber/setup-LemonTree.Automation@v1
         id: GetLTA
         with:
-          License: ${{secrets.LTALICENSE}}
+          License: ${{secrets.LTALICENSE}}    
+      #Diff Check between the modified files     
+      - name: DiffCheck   
+        run: | 
+          $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base Base.eapx --theirs A.eapx --mine B.eapx --sfs log.ltsfs
+          echo $output >> $env:GITHUB_OUTPUT
       #Archive Session Files
       - name: Archive Session Files
         uses: actions/upload-artifact@v3
         with:
-          name: Review Session File
+          name: Diff Session File
           path: log.ltsfs
-          retention-days: 5    
-      #Diff Check between the modified files     
-      - name: DiffCheck   
-        run: | 
-          $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --theirs A.eapx --mine B.eapx --sfs log.ltsfs
-          echo $output
-        
+          retention-days: 5
+          
