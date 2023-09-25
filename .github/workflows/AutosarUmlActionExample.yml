@@ -25,7 +25,7 @@ jobs:
       - name: Run IncQuery AUTOSAR-UML Bridge
         uses: ./
         with:
-          arxml_file_path: counting-logic.arxml
+          arxml_folder_path: example-arxml
           ea_model_file_path: counting-logic.qeax
           incquery_username: "${{ secrets.INCQUERY_USERNAME }}"
           incquery_password: "${{ secrets.INCQUERY_PASSWORD }}"
