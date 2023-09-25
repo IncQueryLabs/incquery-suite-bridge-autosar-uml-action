@@ -14,7 +14,7 @@ jobs:
         shell: pwsh
     runs-on: windows-latest
     timeout-minutes: 15
-        steps:
+    steps:
       - name: Checkout Git repository
         uses: actions/checkout@v3
       
@@ -40,7 +40,7 @@ jobs:
       #Diff Check between the modified files     
       - name: DiffCheck   
         run: | 
-          $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base Base.eapx --theirs A.eapx --mine B.eapx --sfs log.ltsfs
+          $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base counting.eapx --theirs A.eapx --mine B.eapx --sfs log.ltsfs
           echo $output
       #Archive Session Files
       - name: Archive Session Files
