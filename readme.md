@@ -15,9 +15,9 @@ Firslty, this action downloads and installs **IncQuery AUTOSAR-UML Bridge**
 
 ## About the IncQuery AUTOSAR-UML Bridge
 
-<center>
+<p align="center">
   <img height=250 src="./images/connections.svg">
-</center>
+</p>
 
 This works for both documentation purposes, as well as handover automation between architecture and detailed design.
  The IncQuery AUTOSAR-UML Bridge creates UML elements for the complete AUTOSAR hierarchy, so that software component
