@@ -14,9 +14,22 @@ jobs:
         shell: pwsh
     runs-on: windows-latest
     timeout-minutes: 15
-    steps:
+        steps:
       - name: Checkout Git repository
         uses: actions/checkout@v3
+      
+      - name: Backup current model
+        run: |
+          Copy-Item -Path ./counting-logic.qeax -Destination '${{ runner.temp }}/counting-logic-old.qeax'
+      
+      - name: Run IncQuery AUTOSAR-UML Bridge
+        uses: ./
+        with:
+          arxml_folder_path: example-arxml
+          ea_model_file_path: counting-logic.qeax
+          incquery_username: "${{ secrets.INCQUERY_USERNAME }}"
+          incquery_password: "${{ secrets.INCQUERY_PASSWORD }}"
+          license: "${{ secrets.INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE }}"
       #Install LieberLieber LemonTree.Automation on the Action-Runner and prepare the license
       #the secrets.LTALICENSE contains the text from the License File provided
       - name: GetLTA
@@ -36,4 +49,3 @@ jobs:
           name: Diff Session File
           path: log.ltsfs
           retention-days: 5
-          
