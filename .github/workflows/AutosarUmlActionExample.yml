@@ -22,7 +22,7 @@ jobs:
         id: backupModel
         run: |
           $qeaxLocation = '${{ runner.temp }}/counting-logic-old.qeax'
-          $currentQeaxLocation = '$./counting-logic.qeax'
+          $currentQeaxLocation = '/counting-logic.qeax'
           Copy-Item -Path $currentQeaxLocation -Destination $qeaxLocation
           echo "backupQeax=$qeaxLocation" >> $env:GITHUB_OUTPUT
           echo "currentQeax=$currentQeaxLocation" >> $env:GITHUB_OUTPUT
