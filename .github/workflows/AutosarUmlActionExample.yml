@@ -46,7 +46,7 @@ jobs:
       - name: DiffCheck
         id: diffOutput
         run: | 
-          $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base '${{steps.backupModel.outputs.backupQeax}}' --theirs '${{steps.backupModel.outputs.backupQeax}}' --mine '${{steps.backupModel.outputs.currentQeax}}' --sfs log.ltsfs
+          $output = '${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base '${{steps.backupModel.outputs.backupQeax}}' --theirs '${{steps.backupModel.outputs.backupQeax}}' --mine '${{steps.backupModel.outputs.currentQeax}}' --sfs log.ltsfs
           echo "result=$output" >> $env:GITHUB_OUTPUT
       #Archive Session Files
       - name: Archive Session Files
