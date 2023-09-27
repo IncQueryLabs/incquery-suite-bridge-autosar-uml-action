@@ -22,7 +22,7 @@ jobs:
         id: backupModel
         run: |
           $qeaxLocation = '${{ runner.temp }}/counting-logic-old.qeax'
-          $currentQeaxLocation = './counting-logic.qeax'
+          $currentQeaxLocation = '.\counting-logic.qeax'
           Copy-Item -Path $currentQeaxLocation -Destination $qeaxLocation
           echo "backupQeax=$qeaxLocation" >> $env:GITHUB_OUTPUT
           echo "currentQeax=$currentQeaxLocation" >> $env:GITHUB_OUTPUT
@@ -31,7 +31,7 @@ jobs:
         uses: ./
         with:
           arxml_folder_path: example-arxml
-          ea_model_file_path: counting-logic.qeax
+          ea_model_file_path: "${{steps.backupModel.outputs.currentQeax}}"
           incquery_username: "${{ secrets.INCQUERY_USERNAME }}"
           incquery_password: "${{ secrets.INCQUERY_PASSWORD }}"
           license: "${{ secrets.INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE }}"
@@ -46,7 +46,7 @@ jobs:
       - name: DiffCheck
         id: diffOutput
         run: | 
-          $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base  ${{steps.backupModel.outputs.backupQeax}} --theirs ${{steps.backupModel.outputs.backupQeax}} --mine ${{steps.backupModel.outputs.currentQeax}} --sfs log.ltsfs
+          $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base '${{steps.backupModel.outputs.backupQeax}}' --theirs '${{steps.backupModel.outputs.backupQeax}}' --mine '${{steps.backupModel.outputs.currentQeax}}' --sfs log.ltsfs
           echo "result=$output" >> $env:GITHUB_OUTPUT
       #Archive Session Files
       - name: Archive Session Files
