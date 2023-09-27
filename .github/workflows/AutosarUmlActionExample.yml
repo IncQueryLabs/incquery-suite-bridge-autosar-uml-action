@@ -19,8 +19,11 @@ jobs:
         uses: actions/checkout@v3
       
       - name: Backup current model
+        id: backupModelPath
         run: |
-          Copy-Item -Path ./counting-logic.qeax -Destination '${{ runner.temp }}/counting-logic-old.qeax'
+          $qeaxLocation = '${{ runner.temp }}/counting-logic-old.qeax'
+          Copy-Item -Path ./counting-logic.qeax -Destination $qeaxLocation
+          echo "backupQeax=qeaxLocation" >> $env:GITHUB_OUTPUT
       
       - name: Run IncQuery AUTOSAR-UML Bridge
         uses: ./
@@ -38,10 +41,12 @@ jobs:
         with:
           License: ${{secrets.LTALICENSE}}    
       #Diff Check between the modified files     
-      - name: DiffCheck   
+      - name: DiffCheck
+        id: diffOutput
+        if: steps.backupModelPath.outputs.backupQeax == 'counting-logic-old.qeax'
         run: | 
           $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base counting-logic-old.qeax --theirs counting-logic-old.qeax --mine counting-logic.qeax --sfs log.ltsfs
-          echo $output
+          echo "result=output" >> $env:GITHUB_OUTPUT
       #Archive Session Files
       - name: Archive Session Files
         uses: actions/upload-artifact@v3
