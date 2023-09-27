@@ -22,10 +22,8 @@ jobs:
         id: backupModel
         run: |
           $qeaxLocation = '${{ runner.temp }}/counting-logic-old.qeax'
-          $currentQeaxLocation = '${{.}}/counting-logic.qeax'
-          Copy-Item -Path $currentQeax -Destination $qeaxLocation
-          echo "backupQeax=qeaxLocation" >> $env:GITHUB_OUTPUT
-          echo "currentQeax=currentQeaxLocation" >> $env:GITHUB_OUTPUT
+          Copy-Item -Path ./counting-logic.qeax -Destination $qeaxLocation
+          echo "backupQeax=$qeaxLocation" >> $env:GITHUB_OUTPUT
       
       - name: Run IncQuery AUTOSAR-UML Bridge
         uses: ./
@@ -46,8 +44,8 @@ jobs:
       - name: DiffCheck
         id: diffOutput
         run: | 
-          $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base  ${{steps.backupModel.outputs.backupQeax}} --theirs ${{steps.backupModel.outputs.backupQeax}} --mine ${{steps.backupModel.outputs.currentQeax}} --sfs log.ltsfs
-          echo "result=output" >> $env:GITHUB_OUTPUT
+          $output = &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base  ${{steps.backupModel.outputs.backupQeax}} --theirs ${{steps.backupModel.outputs.backupQeax}} --mine counting-logic.qeax --sfs log.ltsfs
+          echo "result=$output" >> $env:GITHUB_OUTPUT
       #Archive Session Files
       - name: Archive Session Files
         uses: actions/upload-artifact@v3
