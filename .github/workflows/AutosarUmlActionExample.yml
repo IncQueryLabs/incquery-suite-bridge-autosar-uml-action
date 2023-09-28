@@ -50,7 +50,7 @@ jobs:
       - name: Calculate differences between the original and reimported EA projects
         id: diffOutput
         run: | 
-          &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base '${{steps.backupEAProjectFile.outputs.backupQeax}}' --theirs '${{steps.backupEAProjectFile.outputs.backupQeax}}' --mine '${{steps.backupEAProjectFile.outputs.currentQeax}}' --sfs "${{steps.backupEAProjectFile.outputs.fileName}}-${{steps.backupEAProjectFile.outputs.fileExtension}}-diff.ltsfs"
+          &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base '${{steps.backupEAProjectFile.outputs.originalEAProjectFile}}' --theirs '${{steps.backupEAProjectFile.outputs.originalEAProjectFile}}' --mine '${{steps.backupEAProjectFile.outputs.reimportedEAProjectFile}}' --sfs "${{steps.backupEAProjectFile.outputs.fileName}}-${{steps.backupEAProjectFile.outputs.fileExtension}}-diff.ltsfs"
       #Archive Session Files
       - name: Archive Session Files
         uses: actions/upload-artifact@v3
