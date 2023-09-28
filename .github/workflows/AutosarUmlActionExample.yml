@@ -21,8 +21,8 @@ jobs:
       - name: Backup current model
         id: backupModel
         run: |
-          $eaFileName = "counting-logic"
-          $eaFileExtension = "qeax"
+          $eaFileName = 'counting-logic'
+          $eaFileExtension = 'qeax'
           $qeaxLocation = '${{ runner.temp }}/${{eaFileName}}-old.${{eaFileExtension}}'
           $currentQeaxLocation = '.\"${{eaFileName}}.${{eaFileExtension}}"'
           Copy-Item -Path $currentQeaxLocation -Destination $qeaxLocation
