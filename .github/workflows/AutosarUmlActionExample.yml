@@ -35,7 +35,7 @@ jobs:
         uses: ./
         with:
           arxml_folder_path: example-arxml
-          ea_model_file_path: "${{steps.backupModel.outputs.currentQeax}}"
+          ea_model_file_path: "${{steps.backupModel.outputs.reimportedEAProjectFile}}"
           incquery_username: "${{ secrets.INCQUERY_USERNAME }}"
           incquery_password: "${{ secrets.INCQUERY_PASSWORD }}"
           license: "${{ secrets.INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE }}"
