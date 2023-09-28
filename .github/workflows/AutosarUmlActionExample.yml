@@ -7,6 +7,9 @@
 
 on:
   push
+env:
+    EA_FILENAME: counting-logic
+    EA_FILEEXTENSION: qeax
 jobs:
   AutosarUml:
     defaults:
@@ -21,8 +24,8 @@ jobs:
       - name: Backup current model
         id: backupModel
         run: |
-          $qeaxLocation = '${{ runner.temp }}/counting-logic-old.qeax'
-          $currentQeaxLocation = '.\counting-logic.qeax'
+          $qeaxLocation = '${{ runner.temp }}/${{EA_FILENAME}}-old.${{EA_FILEEXTENSION}}'
+          $currentQeaxLocation = '.\${{EA_FILENAME}}.${{EA_FILEEXTENSION}}'
           Copy-Item -Path $currentQeaxLocation -Destination $qeaxLocation
           echo "backupQeax=$qeaxLocation" >> $env:GITHUB_OUTPUT
           echo "currentQeax=$currentQeaxLocation" >> $env:GITHUB_OUTPUT
@@ -46,7 +49,7 @@ jobs:
       - name: DiffCheck
         id: diffOutput
         run: | 
-          &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base '${{steps.backupModel.outputs.backupQeax}}' --theirs '${{steps.backupModel.outputs.backupQeax}}' --mine '${{steps.backupModel.outputs.currentQeax}}' --sfs log.ltsfs
+          &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base '${{steps.backupModel.outputs.backupQeax}}' --theirs '${{steps.backupModel.outputs.backupQeax}}' --mine '${{steps.backupModel.outputs.currentQeax}}' --sfs ${{env:EA_FILENAME}}-${{env:EA_FILEEXTENSION}}-DIFF.ltsfs
       #Archive Session Files
       - name: Archive Session Files
         uses: actions/upload-artifact@v3
