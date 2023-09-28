@@ -23,8 +23,8 @@ jobs:
         run: |
           $eaFileName = "counting-logic"
           $eaFileExtension = "qeax"
-          $qeaxLocation = '${{ runner.temp }}/$eaFileName-old.$eaFileExtension'
-          $currentQeaxLocation = '.\$eaFileName.$eaFileExtension'
+          $qeaxLocation = '${{ runner.temp }}/eaFileName-old.eaFileExtension'
+          $currentQeaxLocation = '.\eaFileName.eaFileExtension'
           Copy-Item -Path $currentQeaxLocation -Destination $qeaxLocation
           echo "backupQeax=$qeaxLocation" >> $env:GITHUB_OUTPUT
           echo "currentQeax=$currentQeaxLocation" >> $env:GITHUB_OUTPUT
