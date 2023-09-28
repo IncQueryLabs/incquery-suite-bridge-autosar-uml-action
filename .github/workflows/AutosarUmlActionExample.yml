@@ -18,16 +18,16 @@ jobs:
       - name: Checkout Git repository
         uses: actions/checkout@v3
       
-      - name: Backup current model
-        id: backupModel
+      - name: Backup EA Project File
+        id: backupEAProjectFile
         run: |
           $eaFileName = "counting-logic"
           $eaFileExtension = "qeax"
-          $qeaxLocation = ''${{ runner.temp }}/' + $eaFileName + '-old.' + $eaFileExtension
-          $currentQeaxLocation = ''.\' + $eaFileName + '.' + $eaFileExtension
-          Copy-Item -Path $currentQeaxLocation -Destination $qeaxLocation
-          echo "backupQeax=$qeaxLocation" >> $env:GITHUB_OUTPUT
-          echo "currentQeax=$currentQeaxLocation" >> $env:GITHUB_OUTPUT
+          $originalEaProjectFile = '${{ runner.temp }}/' + $eaFileName + '-old.' + $eaFileExtension
+          $reimportedEaProjectFile = '.\' + $eaFileName + '.' + $eaFileExtension
+          Copy-Item -Path $reimportedEaProjectFile -Destination $originalEaProjectFile
+          echo "originalEAProjectFile=$originalEaProjectFile" >> $env:GITHUB_OUTPUT
+          echo "reimportedEAProjectFile=$reimportedEaProjectFile" >> $env:GITHUB_OUTPUT
           echo "fileName=$eaFileName" >> $env:GITHUB_OUTPUT
           echo "fileExtension=$eaFileExtension" >> $env:GITHUB_OUTPUT
       
@@ -47,7 +47,7 @@ jobs:
         with:
           License: ${{secrets.LTALICENSE}}    
       #Diff Check between the modified files     
-      - name: DiffCheck
+      - name: Calculate differences between the original and reimported EA projects
         id: diffOutput
         run: | 
           &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base '${{steps.backupModel.outputs.backupQeax}}' --theirs '${{steps.backupModel.outputs.backupQeax}}' --mine '${{steps.backupModel.outputs.currentQeax}}' --sfs "${{steps.backupModel.outputs.fileName}}-${{steps.backupModel.outputs.fileExtension}}-diff.ltsfs"
@@ -56,5 +56,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Diff Session File
-          path: log.ltsfs
+          path: ${{ runner.temp }}/${{steps.backupModel.outputs.fileName}}-${{steps.backupModel.outputs.fileExtension}}-diff.ltsfs
           retention-days: 5
