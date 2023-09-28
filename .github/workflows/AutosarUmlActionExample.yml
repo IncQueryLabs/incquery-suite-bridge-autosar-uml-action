@@ -7,9 +7,6 @@
 
 on:
   push
-env:
-    EA_FILENAME: counting-logic
-    EA_FILEEXTENSION: qeax
 jobs:
   AutosarUml:
     defaults:
@@ -24,11 +21,15 @@ jobs:
       - name: Backup current model
         id: backupModel
         run: |
-          $qeaxLocation = '${{ runner.temp }}/"${{EA_FILENAME}}-old.${{EA_FILEEXTENSION}}"'
-          $currentQeaxLocation = '.\"${{EA_FILENAME}}.${{EA_FILEEXTENSION}}"'
+          $ea_filename = "counting-logic"
+          $ea_fileextension = "qeax"
+          $qeaxLocation = '${{ runner.temp }}/${{ea_filename}}-old.${{ea_fileextension}}'
+          $currentQeaxLocation = '.\"${{ea_filename}}.${{ea_fileextension}}"'
           Copy-Item -Path $currentQeaxLocation -Destination $qeaxLocation
           echo "backupQeax=$qeaxLocation" >> $env:GITHUB_OUTPUT
           echo "currentQeax=$currentQeaxLocation" >> $env:GITHUB_OUTPUT
+          echo "filename=$ea_filename" >> $env:GITHUB_OUTPUT
+          echo "fileextension=$ea_fileextension" >> $env:GITHUB_OUTPUT
       
       - name: Run IncQuery AUTOSAR-UML Bridge
         uses: ./
@@ -49,7 +50,7 @@ jobs:
       - name: DiffCheck
         id: diffOutput
         run: | 
-          &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base '${{steps.backupModel.outputs.backupQeax}}' --theirs '${{steps.backupModel.outputs.backupQeax}}' --mine '${{steps.backupModel.outputs.currentQeax}}' --sfs "${{env:EA_FILENAME}}-${{env:EA_FILEEXTENSION}}-DIFF.ltsfs"
+          &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base '${{steps.backupModel.outputs.backupQeax}}' --theirs '${{steps.backupModel.outputs.backupQeax}}' --mine '${{steps.backupModel.outputs.currentQeax}}' --sfs "${{steps.backupModel.outputs.filename}}-${{steps.backupModel.outputs.fileextension}}-diff.ltsfs"
       #Archive Session Files
       - name: Archive Session Files
         uses: actions/upload-artifact@v3
