@@ -6,7 +6,9 @@
 # The following secrets need to be defined: INCQUERY_USERNAME, INCQUERY_PASSWORD, INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE
 
 on:
-  push
+  push:
+    paths:
+        - 'example-arxml'
 jobs:
   AutosarUml:
     defaults:
@@ -18,15 +20,45 @@ jobs:
       - name: Checkout Git repository
         uses: actions/checkout@v3
       
-      - name: Backup current model
+      - name: Backup EA Project File
+        id: backupEAProjectFile
         run: |
-          Copy-Item -Path ./counting-logic.qeax -Destination '${{ runner.temp }}/counting-logic-old.qeax'
+          $eaFileName = "counting-logic"
+          $eaFileExtension = "qeax"
+          $originalEaProjectFile = '${{ runner.temp }}/' + $eaFileName + '-old.' + $eaFileExtension
+          $reimportedEaProjectFile = '.\' + $eaFileName + '.' + $eaFileExtension
+          Copy-Item -Path $reimportedEaProjectFile -Destination $originalEaProjectFile
+          echo "originalEAProjectFile=$originalEaProjectFile" >> $env:GITHUB_OUTPUT
+          echo "reimportedEAProjectFile=$reimportedEaProjectFile" >> $env:GITHUB_OUTPUT
+          echo "fileName=$eaFileName" >> $env:GITHUB_OUTPUT
+          echo "fileExtension=$eaFileExtension" >> $env:GITHUB_OUTPUT
       
       - name: Run IncQuery AUTOSAR-UML Bridge
         uses: ./
         with:
           arxml_folder_path: example-arxml
-          ea_model_file_path: counting-logic.qeax
+          ea_model_file_path: "${{steps.backupEAProjectFile.outputs.reimportedEAProjectFile}}"
           incquery_username: "${{ secrets.INCQUERY_USERNAME }}"
           incquery_password: "${{ secrets.INCQUERY_PASSWORD }}"
           license: "${{ secrets.INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE }}"
+      #Install LieberLieber LemonTree.Automation on the Action-Runner and prepare the license
+      #the secrets.LTALICENSE contains the text from the License File provided
+      - name: GetLTA
+        uses: LieberLieber/setup-LemonTree.Automation@v1
+        id: GetLTA
+        with:
+          License: ${{secrets.LTALICENSE}}    
+      #Diff Check between the modified files     
+      - name: Calculate differences between the original and reimported EA projects
+        id: diffOutput
+        run: | 
+          $diffFile = "${{ runner.temp }}/${{steps.backupEAProjectFile.outputs.fileName}}-${{steps.backupEAProjectFile.outputs.fileExtension}}-diff.ltsfs"
+          &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base '${{steps.backupEAProjectFile.outputs.originalEAProjectFile}}' --theirs '${{steps.backupEAProjectFile.outputs.originalEAProjectFile}}' --mine '${{steps.backupEAProjectFile.outputs.reimportedEAProjectFile}}' --sfs $diffFile
+          echo "diffSessionFile=$diffFile" >> $env:GITHUB_OUTPUT
+      #Archive Session Files
+      - name: Archive Session Files
+        uses: actions/upload-artifact@v3
+        with:
+          name: Diff Session File
+          path: '${{steps.diffOutput.outputs.diffSessionFile}}'
+          retention-days: 5
