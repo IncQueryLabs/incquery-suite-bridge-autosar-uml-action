@@ -41,13 +41,6 @@ jobs:
           incquery_username: "${{ secrets.INCQUERY_USERNAME }}"
           incquery_password: "${{ secrets.INCQUERY_PASSWORD }}"
           license: "${{ secrets.INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE }}"
-      #Archive Session Files
-      - name: Archive Session Files
-        uses: actions/upload-artifact@v3
-        with:
-          name: Diff Session File
-          path: '${{steps.diffOutput.outputs.diffSessionFile}}'
-          retention-days: 5
       - name: Push updated model
         run: |
           git config --local user.name "Automatic Model Update"
