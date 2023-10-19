@@ -5,9 +5,9 @@
 This repository contains a GitHub Action for deploying and running the IncQuery AUTOSAR-UML Bridge.
  The repository also contains a workflow example demonstrating how to use the action.
 
-## What does this action do?
+## What does the workflow do?
 
-Firslty, this action downloads and installs **IncQuery AUTOSAR-UML Bridge**
+Firslty, using the provided action, the workflow downloads and installs **IncQuery AUTOSAR-UML Bridge**
  (unless already installed on the GitHub Runner), then executes a transformation on an input AUTSOAR model,
  adding corresponding elements to the specified Enterprise Architect model.
  Then, should this result in a change in the Enterprise Architect model, the result is pushed back onto the
