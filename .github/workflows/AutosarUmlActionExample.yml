@@ -8,7 +8,7 @@
 on:
   push:
     paths:
-        - 'example-arxml'
+      - 'example-arxml'
 jobs:
   AutosarUml:
     defaults:
