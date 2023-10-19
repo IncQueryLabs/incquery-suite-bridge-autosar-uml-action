@@ -34,7 +34,7 @@ jobs:
           echo "fileExtension=$eaFileExtension" >> $env:GITHUB_OUTPUT
       
       - name: Run IncQuery AUTOSAR-UML Bridge
-        uses: ./
+        uses: IncQueryLabs/incquery-suite-bridge-autosar-uml-action@v1
         with:
           arxml_folder_path: example-arxml
           ea_model_file_path: "${{steps.backupEAProjectFile.outputs.reimportedEAProjectFile}}"
@@ -62,3 +62,10 @@ jobs:
           name: Diff Session File
           path: '${{steps.diffOutput.outputs.diffSessionFile}}'
           retention-days: 5
+      - name: Push updated model
+        run: |
+          git config --local user.name "Automatic Model Update"
+          git config --local user.email "username@users.noreply.github.com"
+          git add '${{steps.backupEAProjectFile.outputs.reimportedEAProjectFile}}'
+          git commit -m "Automatic Model Update"
+          git push
