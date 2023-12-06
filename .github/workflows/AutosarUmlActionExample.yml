@@ -8,7 +8,7 @@
 on:
   push:
     paths:
-        - 'example-arxml'
+      - 'example-arxml/**/*.arxml'
 jobs:
   AutosarUml:
     defaults:
@@ -34,31 +34,17 @@ jobs:
           echo "fileExtension=$eaFileExtension" >> $env:GITHUB_OUTPUT
       
       - name: Run IncQuery AUTOSAR-UML Bridge
-        uses: ./
+        uses: IncQueryLabs/incquery-suite-bridge-autosar-uml-action@v1
         with:
           arxml_folder_path: example-arxml
           ea_model_file_path: "${{steps.backupEAProjectFile.outputs.reimportedEAProjectFile}}"
           incquery_username: "${{ secrets.INCQUERY_USERNAME }}"
           incquery_password: "${{ secrets.INCQUERY_PASSWORD }}"
           license: "${{ secrets.INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE }}"
-      #Install LieberLieber LemonTree.Automation on the Action-Runner and prepare the license
-      #the secrets.LTALICENSE contains the text from the License File provided
-      - name: GetLTA
-        uses: LieberLieber/setup-LemonTree.Automation@v1
-        id: GetLTA
-        with:
-          License: ${{secrets.LTALICENSE}}    
-      #Diff Check between the modified files     
-      - name: Calculate differences between the original and reimported EA projects
-        id: diffOutput
-        run: | 
-          $diffFile = "${{ runner.temp }}/${{steps.backupEAProjectFile.outputs.fileName}}-${{steps.backupEAProjectFile.outputs.fileExtension}}-diff.ltsfs"
-          &'${{steps.GetLTA.outputs.LemonTreeAutomationExecutable}}' diff --base '${{steps.backupEAProjectFile.outputs.originalEAProjectFile}}' --theirs '${{steps.backupEAProjectFile.outputs.originalEAProjectFile}}' --mine '${{steps.backupEAProjectFile.outputs.reimportedEAProjectFile}}' --sfs $diffFile
-          echo "diffSessionFile=$diffFile" >> $env:GITHUB_OUTPUT
-      #Archive Session Files
-      - name: Archive Session Files
-        uses: actions/upload-artifact@v3
-        with:
-          name: Diff Session File
-          path: '${{steps.diffOutput.outputs.diffSessionFile}}'
-          retention-days: 5
+      - name: Push updated model
+        run: |
+          git config --local user.name "Automatic Model Update"
+          git config --local user.email "username@users.noreply.github.com"
+          git add '${{steps.backupEAProjectFile.outputs.reimportedEAProjectFile}}'
+          git commit -m "Automatic Model Update"
+          git push
