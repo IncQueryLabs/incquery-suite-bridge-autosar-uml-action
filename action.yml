@@ -103,7 +103,8 @@ runs:
       shell: pwsh
       run: |
         $env:ARUML_HOME = 'C:\Program Files\IncQuery Labs\IncQuery AUTOSAR-UML Bridge\Transformation\'
-        
+        echo "${{ inputs.targetPackageGuid }}"
+        echo "${{ inputs.targetPackagePath }}"
         $targetPackageGuid = [System.Management.Automation.Language.CodeGeneration]::EscapeSingleQuotedStringContent("${{ inputs.targetPackageGuid }}")
         $targetPackagePath = [System.Management.Automation.Language.CodeGeneration]::EscapeSingleQuotedStringContent("${{ inputs.targetPackagePath }}")
         if (!([string]::IsNullOrWhitespace($targetPackageGuid)))
