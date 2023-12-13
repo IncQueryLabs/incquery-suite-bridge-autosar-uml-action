@@ -41,6 +41,7 @@ jobs:
           incquery_username: "${{ secrets.INCQUERY_USERNAME }}"
           incquery_password: "${{ secrets.INCQUERY_PASSWORD }}"
           license: "${{ secrets.INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE }}"
+          targetPackagePath: "Bob's Uncle"
       - name: Push updated model
         run: |
           git config --local user.name "Automatic Model Update"
