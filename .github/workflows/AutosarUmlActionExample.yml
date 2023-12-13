@@ -4,6 +4,7 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 # The following secrets need to be defined: INCQUERY_USERNAME, INCQUERY_PASSWORD, INCQUERY_AUTOSAR_UML_INTEGRATION_LICENSE
+name: AUTOSAR-UML Bridge Action Example
 
 on:
   push:

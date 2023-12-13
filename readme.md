@@ -83,3 +83,14 @@ Username and password to *artifacts.incquery.io*.
 
 Contents of the license file as-is. The AutosarUMLIntegration and AutosarUMLIntegrationCI license features are required.
  This parameter is mandatory.
+
+#### targetPackageGuid
+
+The GUID of the package where the imported elements are placed. Takes priority over targetPackagePath if both are specified.
+ If neither targetPackageGuid or targetPackagePath are set, elements are placed into the alphabetically-first root model.
+
+#### targetPackagePath
+
+The path to the package where the imported elements are placed, separated by "." characters.
+ Ignored if targetPackageGuid is specified. If neither targetPackageGuid or targetPackagePath are set,
+ elements are placed into the alphabetically-first root model.

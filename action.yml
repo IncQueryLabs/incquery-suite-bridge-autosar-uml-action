@@ -22,6 +22,12 @@ inputs:
   license:
     description: "The contents of the supplied license file."
     required: true
+  targetPackageGuid:
+    description: "The GUID of the package where the imported elements are placed."
+    required: false
+  targetPackagePath:
+    description: "The path to the package where the imported elements are placed."
+    required: false
 
 runs:
   using: "composite"
@@ -97,4 +103,20 @@ runs:
       shell: pwsh
       run: |
         $env:ARUML_HOME = 'C:\Program Files\IncQuery Labs\IncQuery AUTOSAR-UML Bridge\Transformation\'
-        & 'C:\Program Files\IncQuery Labs\IncQuery AUTOSAR-UML Bridge\CLI\iql-aub-cli.exe' -i '${{ inputs.arxml_folder_path }}' -e '${{ inputs.ea_model_file_path }}' -l '${{ runner.temp }}/IncQueryAUBLic.yaml' 
+        $targetPackageGuid = "${{ inputs.targetPackageGuid }}"
+        $targetPackagePath = "${{ inputs.targetPackagePath }}"
+        if (!([string]::IsNullOrWhitespace($targetPackageGuid)))
+        {
+          echo "Run transformation by target GUID"
+          & 'C:\Program Files\IncQuery Labs\IncQuery AUTOSAR-UML Bridge\CLI\iql-aub-cli.exe' -i '${{ inputs.arxml_folder_path }}' -e '${{ inputs.ea_model_file_path }}' -l '${{ runner.temp }}/IncQueryAUBLic.yaml' -t "$targetPackageGuid"
+        }
+        elseif (!([string]::IsNullOrWhitespace($targetPackagePath)))
+        {
+          echo "Run transformation by target path"
+          & 'C:\Program Files\IncQuery Labs\IncQuery AUTOSAR-UML Bridge\CLI\iql-aub-cli.exe' -i '${{ inputs.arxml_folder_path }}' -e '${{ inputs.ea_model_file_path }}' -l '${{ runner.temp }}/IncQueryAUBLic.yaml' -p "$targetPackagePath"
+        }
+        else
+        {
+          echo "Run transformation by default target"
+          & 'C:\Program Files\IncQuery Labs\IncQuery AUTOSAR-UML Bridge\CLI\iql-aub-cli.exe' -i '${{ inputs.arxml_folder_path }}' -e '${{ inputs.ea_model_file_path }}' -l '${{ runner.temp }}/IncQueryAUBLic.yaml'
+        }
