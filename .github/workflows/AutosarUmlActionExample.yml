@@ -34,7 +34,7 @@ jobs:
           echo "fileExtension=$eaFileExtension" >> $env:GITHUB_OUTPUT
       
       - name: Run IncQuery AUTOSAR-UML Bridge
-        uses: IncQueryLabs/incquery-suite-bridge-autosar-uml-action@v1
+        uses: IncQueryLabs/incquery-suite-bridge-autosar-uml-action@issues/ARUMLPD-86/package-parameters
         with:
           arxml_folder_path: example-arxml
           ea_model_file_path: "${{steps.backupEAProjectFile.outputs.reimportedEAProjectFile}}"
