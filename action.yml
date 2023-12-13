@@ -108,12 +108,12 @@ runs:
         if (!([string]::IsNullOrWhitespace($targetPackageGuid)))
         {
           echo "Run transformation by target GUID"
-          & 'C:\Program Files\IncQuery Labs\IncQuery AUTOSAR-UML Bridge\CLI\iql-aub-cli.exe' -i '${{ inputs.arxml_folder_path }}' -e '${{ inputs.ea_model_file_path }}' -l '${{ runner.temp }}/IncQueryAUBLic.yaml' -t "'$targetPackageGuid'"
+          & 'C:\Program Files\IncQuery Labs\IncQuery AUTOSAR-UML Bridge\CLI\iql-aub-cli.exe' -i '${{ inputs.arxml_folder_path }}' -e '${{ inputs.ea_model_file_path }}' -l '${{ runner.temp }}/IncQueryAUBLic.yaml' -t "$targetPackageGuid"
         }
         elseif (!([string]::IsNullOrWhitespace($targetPackagePath)))
         {
           echo "Run transformation by target path"
-          & 'C:\Program Files\IncQuery Labs\IncQuery AUTOSAR-UML Bridge\CLI\iql-aub-cli.exe' -i '${{ inputs.arxml_folder_path }}' -e '${{ inputs.ea_model_file_path }}' -l '${{ runner.temp }}/IncQueryAUBLic.yaml' -p "'$targetPackagePath'"
+          & 'C:\Program Files\IncQuery Labs\IncQuery AUTOSAR-UML Bridge\CLI\iql-aub-cli.exe' -i '${{ inputs.arxml_folder_path }}' -e '${{ inputs.ea_model_file_path }}' -l '${{ runner.temp }}/IncQueryAUBLic.yaml' -p "$targetPackagePath"
         }
         else
         {
